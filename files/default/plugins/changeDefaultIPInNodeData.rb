@@ -1,9 +1,5 @@
-provides "network"
-require_plugin "hostname"
-require_plugin "#{os}::network"
-
 network['interfaces'].each do |iface, addrs|
-	if iface.eql?(node['network_interfaces']['private'])
+	if iface.eql?('eth0')
 		addrs['addresses'].each do |ip, params|	
 			self.ipaddress ip if params['family'].eql?('inet')
 			#network["ipaddress_#{iface}"] = ip if params['family'].eql?('inet')
@@ -13,4 +9,3 @@ network['interfaces'].each do |iface, addrs|
 		end
   	end
 end
-network
