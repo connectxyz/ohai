@@ -24,9 +24,12 @@
 # so basically in addition to putting the plugin template into the templates/default directory you'll 
 # need to specify "enable" it in some node attributes so it knows what file to fetch:
 node['ohai']['templated_plugins'].each do |tPlugin|
-	template node['ohai']['plugin_path'] + tPlugin do
+	tp = template node['ohai']['plugin_path'] + '/' + tPlugin do
 		source tPlugin + '.erb'
 	end
+	reload_ohai ||= tp.updated? #TODO this doesn't work? 
+				    # no, because node['ipaddress'] isn't changing until the 
+				    # next chef run. 
 end
 # node['ohai']['templated_plugins'][0] == 'changeDefaultIPInNodeData.rb' 
 # and the file in templates/default would need to be named 'changeDefaultIPInNodeData.rb.erb'

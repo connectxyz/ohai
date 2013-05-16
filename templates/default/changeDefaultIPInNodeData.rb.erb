@@ -1,5 +1,5 @@
 network['interfaces'].each do |iface, addrs|
-	if iface.eql?(<%= node['network_interfaces']['private'] %>)
+	if iface.eql?('<%= node['network_interfaces']['private'] %>')
 		addrs['addresses'].each do |ip, params|	
 			self.ipaddress ip if params['family'].eql?('inet')
 		end
