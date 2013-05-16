@@ -17,6 +17,20 @@
 # limitations under the License.
 #
 
+#11:57 < paigeat> in a recipe, is there a way to get a quick file list of all the templates in the templates/default directory? 
+#11:58 <@coderanger> paigeat: No
+#11:58 <@coderanger> paigeat: They are only transferred on-demand, so they don't exist until requested
+
+# so basically in addition to putting the plugin template into the templates/default directory you'll 
+# need to specify "enable" it in some node attributes so it knows what file to fetch:
+node['ohai']['templated_plugins'].each do |tPlugin|
+	template node['ohai']['plugin_path'] + tPlugin do
+		source tPlugin + '.erb'
+	end
+end
+# node['ohai']['templated_plugins'][0] == 'changeDefaultIPInNodeData.rb' 
+# and the file in templates/default would need to be named 'changeDefaultIPInNodeData.rb.erb'
+
 unless Ohai::Config[:plugin_path].include?(node['ohai']['plugin_path'])
   Ohai::Config[:plugin_path] << node['ohai']['plugin_path']
 end
